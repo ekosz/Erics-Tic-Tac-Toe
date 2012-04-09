@@ -4,12 +4,11 @@ Tic Tac Toe
 How to play
 ----
 
-    irb -Ilib
-    require 'game'
-    Game.new.run
+    gem install erics_tic_tac_toe
+    tic_tac_toe
 
-Whats coming
-----
+TODO
+---
 
-Gem and Bin executable for playing games easily
-Play games on boards bigger than 3x3
+* Use Curses for a nicer playing experience
+* Colorize diffs so that its easier to see what move was just played
