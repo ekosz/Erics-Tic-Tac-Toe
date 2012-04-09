@@ -3,12 +3,12 @@ $:.push File.expand_path("../lib", __FILE__)
 require "tic-tac-toe/version"
 
 Gem::Specification.new do |s|
-  s.name        = "Erics Tic Tac Toe"
+  s.name        = "erics_tic_tac_toe"
   s.version     = TicTacToe::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Eric Koslow"]
   s.email       = ["ekoslow@gmail.com"]
-  s.homepage    = "https://github.com/ekosz/Tic-Tac-Toe"
+  s.homepage    = "https://github.com/ekosz/Erics-Tic-Tac-Toe"
   s.summary     = %q{A game of Tic Tac Toe}
   s.description = %q{Plays the perfect game of Tic Tac Toe everytime. This computer can not lose.}
 
