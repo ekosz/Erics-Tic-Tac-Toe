@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+libdir = File.expand_path('../../lib', __FILE__).sub(/^#{Dir.pwd}\//, '')
+begin 
+  require 'tic_tac_toe'
+rescue LoadError
+  case $!.to_s
+  when /tic_tac_toe/
+  if !$:.include?(libdir)
+      warn "warn: #$!. trying again with #{libdir} on load path"
+      $:.unshift(libdir)
+      retry
+    end
+  end
+  raise
+end
+
+TicTacToe::Game.new.run
