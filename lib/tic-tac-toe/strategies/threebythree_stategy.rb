@@ -1,6 +1,7 @@
 require_relative 'threebythree_implementations/brute_force_implementation'
 
 module TicTacToe
+  # Strategy used when playing on a 3x3 board
   class ThreebythreeStrategy
     def initialize(board, letter, implementation=BruteForceImplementation)
       @implementation = implementation.new(board, letter)

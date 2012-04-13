@@ -1,5 +1,9 @@
 module TicTacToe
+  # Terminal GameType
+  # Interacts with the user through the termial
+  # Uses puts for output, and gets for input
   class TerminalGame
+    # Internal Error used when a user tries pulling an illegal move
     class IllegalMove < RuntimeError
     end
 
@@ -8,9 +12,8 @@ module TicTacToe
     end
 
     def computer_goes_first?
-      print "Would you like to play first or second? (f/s) "
-      input = gets.chomp
-      unless input =~ /^(f|first)$/i
+      unless get_input("Would you like to play first or second? (f/s)") =~ 
+                        /^(f|first)$/i
         @human_letter = X
         true
       else
@@ -20,21 +23,13 @@ module TicTacToe
     end
 
     def get_move_from_user!
-      print "Your move (#{@human_letter}) (1-9): "
-      input = gets.chomp
+      cords = get_cords_from_user
 
-      if input =~ /^\d$/ 
-        cords = cord_from_num(input.to_i)
-        if !@board.get_cell(*cords)
-          @board.play_at(*(cords+[@human_letter]))
-        else
-          raise IllegalMove.new("That cell is already taken")
-        end
-      else
-        raise IllegalMove.new("Must be a single number")
-      end
-    rescue IllegalMove => e
-      display_text "Illegal Move: #{e.message}. Please try again"
+      raise IllegalMove.new("That cell is already taken") unless empty_cell?(cords)
+
+      @board.play_at(*cords_with_letter(cords, @human_letter))
+    rescue IllegalMove => error
+      display_text "Illegal Move: #{error.message}. Please try again"
       get_move_from_user!
     end
 
@@ -54,9 +49,28 @@ module TicTacToe
 
     private
 
+    def get_input(text)
+      print text + ' '
+      gets.chomp
+    end
+
+    def empty_cell?(cords)
+      !@board.get_cell(*cords)
+    end
+
+    def get_cords_from_user
+      input = get_input("Your move (#{@human_letter}) (1-9):")
+      raise IllegalMove.new("That cell is already taken") unless input =~ /^\d$/
+      cord_from_num(input.to_i)
+    end
+
     def cord_from_num(num)
       num -= 1
       [num % Board::SIZE, num/Board::SIZE]
+    end
+
+    def cords_with_letter(cords, letter)
+      Array(cords) + Array(letter)
     end
   end
 

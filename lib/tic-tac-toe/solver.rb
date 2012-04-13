@@ -1,6 +1,7 @@
 require_relative 'strategies/threebythree_stategy'
 
 module TicTacToe
+  # Finds the next best move using a strategy
   class Solver
 
     def initialize(board, letter, strategy=ThreebythreeStrategy)

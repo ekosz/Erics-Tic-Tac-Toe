@@ -4,6 +4,8 @@
 require_relative 'game_types/terminal_game'
 
 module TicTacToe
+  # The main director of the program
+  # Directs its gametype when to retrieve information from the user
   class Game
     def initialize(type=TerminalGame)
       @board = Board.new
@@ -11,23 +13,10 @@ module TicTacToe
     end
 
     def run
-      if @game_type.computer_goes_first?
-        @computer_letter = O
-        get_move_from_computer!
-      else
-        @computer_letter = X
-      end
-
-      @game_type.update_board
+      setup_game
 
       loop do
-        @game_type.get_move_from_user!
-        @game_type.update_board
-        break if game_over?
-
-        get_move_from_computer!
-        @game_type.update_board
-        break if game_over?
+        main_game_loop
       end
 
       if @game_type.play_again?
@@ -39,6 +28,25 @@ module TicTacToe
 
     def new_game
       Game.new.run
+    end
+
+    def setup_game
+      if @game_type.computer_goes_first?
+        @computer_letter = O
+        get_move_from_computer!
+      else
+        @computer_letter = X
+      end
+
+      @game_type.update_board
+    end
+
+    def main_game_loop
+      [:get_move_from_user!, :get_move_from_computer!].each do |command|
+        @game_type.send(command)
+        @game_type.update_board
+        break if game_over?
+      end
     end
     
     def game_over?

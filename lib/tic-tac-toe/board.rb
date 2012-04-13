@@ -1,4 +1,9 @@
+require_relative 'winning_group_checker'
+
 module TicTacToe
+  # The main class for managing the state of the game board
+  # The board data is represented at a two dimensional array
+  # It provides helper methods for access the data
   class Board
 
     SIZE = 3.freeze
@@ -28,19 +33,19 @@ module TicTacToe
 
     # Returns the corners of the grid
     def corners
-      [@grid[0][0], 
-       @grid[0][SIZE-1], 
-       @grid[SIZE-1][SIZE-1], 
-       @grid[SIZE-1][0]]
+      top_row = @grid.first
+      bottom_row = @grid.last
+      [top_row.first,     # Top Left
+       top_row.last,      # Top Right
+       bottom_row.last,   # Bottom Right
+       bottom_row.first]  # Bottom Left
     end
 
     # Returns the corners of the empty cells
     def any_empty_position(&block)
-      SIZE.times do |y|
-        SIZE.times do |x|
-          next if get_cell(x, y)
-          yield(x, y)
-        end
+      each_position do |x, y|
+        next if get_cell(x, y)
+        yield(x, y)
       end
     end
 
@@ -105,9 +110,7 @@ module TicTacToe
     # Preform a deep clone of the board
     # FIXME: This only works for SIZE=3
     def clone
-      Board.new([[@grid[0][0], @grid[0][1], @grid[0][2] ],
-                 [@grid[1][0], @grid[1][1], @grid[1][2] ],
-                 [@grid[2][0], @grid[2][1], @grid[2][2] ]])
+      Board.new(@grid.map { |row| row.map { |cell| cell } })
     end
 
     private 
@@ -120,9 +123,17 @@ module TicTacToe
       end
     end
 
+    def each_position(&block)
+      @grid.each_with_index do |row, y|
+        row.each_with_index do |cell, x|
+          yield(x, y)
+        end
+      end
+    end
+
     def won_across?(grid = @grid)
       grid.any? do |row|
-        winning_group?(row)
+        WinningGroupChecker.new(row).won?
       end
     end
 
@@ -131,17 +142,19 @@ module TicTacToe
     end
 
     def won_diagonally?
-      base = (0..@grid.size-1)
-      left_to_right = base.collect { |i| @grid[i][i]}
-      right_to_left = base.collect { |i| @grid[i][@grid.size-1-i]}
-      return true if winning_group?(left_to_right)
-      return true if winning_group?(right_to_left)
+      right_limit = SIZE-1
+      base = (0..right_limit)
+      
+      return true if create_and_check_group(base) { |i| @grid[i][i] }
+      return true if create_and_check_group(base) { |i| @grid[i][right_limit-i] }
+
       false
     end
 
-    def winning_group?(group)
-      # Won when none of the cells are nil and they are all the same value
-      !group.any? { |cell| cell.nil? } && group.uniq.size == 1
+    def create_and_check_group(base, &block)
+      group = base.collect { |i| yield(i) }
+      return true if WinningGroupChecker.new(group).won?
+      false
     end
 
   end
