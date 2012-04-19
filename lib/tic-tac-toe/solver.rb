@@ -1,4 +1,5 @@
 require_relative 'strategies/threebythree_stategy'
+require_relative 'potential_state'
 
 module TicTacToe
   # Finds the next best move using a strategy

@@ -8,15 +8,14 @@ module TicTacToe
   class BruteForceImplementation
 
     def initialize(board, letter)
-      @board, @letter = board, letter
+      @board, @letter, @state = board, letter, PotentialState.new(board, letter)
     end
 
     # Try placing letter at every available position
     # If the board is solved, do that
     def win!
       each_position do |row, column|
-        temp_board = create_temp_board_with(@board, row, column, @letter)
-        if temp_board.solved?
+        if @state.at(row, column).solved?
           @board.play_at(row, column, @letter)
           return true
         end
@@ -27,9 +26,9 @@ module TicTacToe
     # Try placing the opponent's letter at every available position
     # If the board is solved, block them at that position
     def block!(board = @board, letter = @letter)
+      state = PotentialState.new(board, other_player(letter))
       each_position do |row, column|
-        temp_board = create_temp_board_with(board, row, column, other_player(letter))
-        if temp_board.solved?
+        if state.at(row, column).solved?
           board.play_at(row, column, letter)
           return true
         end
@@ -40,7 +39,7 @@ module TicTacToe
     # Try placing the letter at every position.
     # If there are now two winning solutions for next turn, go there
     def fork!
-      each_forking_position do |row, column|
+      @state.each_forking_position do |row, column|
         @board.play_at(row, column, @letter)
         return true
       end
@@ -49,14 +48,19 @@ module TicTacToe
 
     # Try placing the opponent's letter at every position.
     # If there are now two winning solutions for next turn, block them there
-    def block_fork!(board = @board)
-      each_forking_position(other_player) do |row, column|
-        temp_board = create_temp_board_with(board, row, column, @letter)
+    def block_fork!
+      PotentialState.new(@board, other_player).each_forking_position do |row, column|
+        
+        # Simulate blocking the fork
+        temp_board = @board.clone
+        temp_board.play_at(row, column, @letter)
+
+        oppents_move = PotentialState.new(temp_board, other_player)
         
         # Search for the elusive double fork
-        return force_a_block if forking_positions(other_player, temp_board).any?
-
-        board.play_at(row, column, @letter)
+        return force_a_block if oppents_move.forking_positions.any?
+        
+        @board.play_at(row, column, @letter)
         return true
       end
       false
@@ -103,7 +107,7 @@ module TicTacToe
       false
     end
 
-    private
+private
 
     def corner_from_index(index, letter)
       first = 0
@@ -135,18 +139,8 @@ module TicTacToe
       end
     end
 
-    def create_temp_board_with(board, row, column, letter)
-      temp_board = board.clone
-      temp_board.play_at(row, column, letter)
-      temp_board
-    end
-
     def other_player(letter = @letter)
       letter == X ? O : X
-    end
-
-    def fork_exsits?(row, column, letter = @letter, board = @board)
-      (count = can_win_next_turn?(row, column, letter, board)) && count >= 2
     end
 
     def each_position(&block)
@@ -157,42 +151,18 @@ module TicTacToe
       end
     end
 
-    def forking_positions(letter, board)
-      positions = [] 
-      each_position do |row, column|
-        positions << [row, column] if fork_exsits?(row, column, letter, board)
-      end
-      positions
-    end
-
-    def each_forking_position(letter = @letter, board = @board, &block)
-      forking_positions(letter, board).each { |position| yield(*position) }
-    end
-
-    def can_win_next_turn?(row, column, letter = @letter, board = @board)
-      temp_board = create_temp_board_with(board, row, column, letter)
-      count = winning_positions_count(temp_board, letter)
-      return count == 0 ? false : count
-    end
-
-    def winning_positions_count(board, letter)
-      count = 0
-      each_position do |row, column|
-        temp_board = create_temp_board_with(board, row, column, letter)
-        count += 1 if temp_board.solved?
-      end
-      count
-    end
-
     def force_a_block
       # Force them to block without creating another fork
       each_position do |row, column|
-        if can_win_next_turn?(row, column)
-          temp_board = create_temp_board_with(@board, row, column, @letter)
+        if @state.at(row, column).can_win_next_turn?
+
+          # Simulate forcing them to block
+          temp_board = @board.clone
+          temp_board.play_at(row, column, @letter)
           block!(temp_board, other_player)
           
           # Did I just create another fork with that block?
-          next if fork_exsits?(row, column, other_player, temp_board)
+          next if PotentialState.new(temp_board, other_player).fork_exsits?
 
           @board.play_at(row, column, @letter)
           return true
