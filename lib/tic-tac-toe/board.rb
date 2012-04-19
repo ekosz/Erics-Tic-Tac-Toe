@@ -15,8 +15,8 @@ module TicTacToe
       @grid = grid || [ [nil] * SIZE ] * SIZE
     end
 
-    def get_cell(x, y)
-      @grid[y][x]
+    def get_cell(row, column)
+      @grid[column][row]
     end
 
     # Returns the closest middle cell
@@ -43,23 +43,23 @@ module TicTacToe
 
     # Returns the corners of the empty cells
     def any_empty_position(&block)
-      each_position do |x, y|
-        next if get_cell(x, y)
-        yield(x, y)
+      each_position do |row, column|
+        next if get_cell(row, column)
+        yield(row, column)
       end
     end
 
     # Plays a letter at a position, unless that position has already been taken
-    def play_at(x, y, letter)
+    def play_at(row, column, letter)
       # Weird bug I found in ruby 1.9.3-p0
       # Given a @grid of [ [nil,nil,nil], [nil,nil,nil], [nil,nil,nil] ]
       # If you call @grid[0][0] = 'x'
       # I aspect @grid to be [ ['x',nil,nil], [nil,nil,nil], [nil,nil,nil] ]
       # What happens is that @grid is [ ['x',nil,nil], ['x',nil,nil], ['x',nil,nil] ]
       # This is a workaround for that
-      inner = @grid[y].clone
-      inner[x] ||= letter
-      @grid[y] = inner
+      inner = @grid[column].clone
+      inner[row] ||= letter
+      @grid[column] = inner
     end
 
     # Returns true if the grid is empty
@@ -113,7 +113,7 @@ module TicTacToe
       Board.new(@grid.map { |row| row.map { |cell| cell } })
     end
 
-    private 
+private 
 
     def each_cell(&block)
       @grid.each do |row|
@@ -126,7 +126,7 @@ module TicTacToe
     def each_position(&block)
       @grid.each_with_index do |row, y|
         row.each_with_index do |cell, x|
-          yield(x, y)
+          yield(y, x)
         end
       end
     end

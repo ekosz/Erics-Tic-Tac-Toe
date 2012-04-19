@@ -9,6 +9,7 @@ module TicTacToe
 
     def initialize(board, letter)
       @board, @letter, @state = board, letter, PotentialState.new(board, letter)
+      @other_player = other_player
     end
 
     # Try placing letter at every available position
@@ -49,17 +50,17 @@ module TicTacToe
     # Try placing the opponent's letter at every position.
     # If there are now two winning solutions for next turn, block them there
     def block_fork!
-      PotentialState.new(@board, other_player).each_forking_position do |row, column|
+      PotentialState.new(@board, @other_player).each_forking_position do |row, column|
         
         # Simulate blocking the fork
         temp_board = @board.clone
         temp_board.play_at(row, column, @letter)
 
-        oppents_move = PotentialState.new(temp_board, other_player)
-        
         # Search for the elusive double fork
-        return force_a_block if oppents_move.forking_positions.any?
-        
+        if PotentialState.new(temp_board, @other_player).forking_positions.any?
+          return force_a_block 
+        end
+
         @board.play_at(row, column, @letter)
         return true
       end
@@ -79,7 +80,7 @@ module TicTacToe
       first = 0
       last = Board::SIZE - 1
       @board.corners.each_with_index do |corner, index|
-        if corner == other_player
+        if corner == @other_player
           next if @board.get_cell(*opposite_corner_from_index(index).compact)
           @board.play_at(*opposite_corner_from_index(index, @letter))
           return true
@@ -159,10 +160,10 @@ private
           # Simulate forcing them to block
           temp_board = @board.clone
           temp_board.play_at(row, column, @letter)
-          block!(temp_board, other_player)
+          block!(temp_board, @other_player)
           
           # Did I just create another fork with that block?
-          next if PotentialState.new(temp_board, other_player).fork_exsits?
+          next if PotentialState.new(temp_board, @other_player).fork_exsits?
 
           @board.play_at(row, column, @letter)
           return true
