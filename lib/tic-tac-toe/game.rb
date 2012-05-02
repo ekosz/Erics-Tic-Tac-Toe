@@ -15,9 +15,7 @@ module TicTacToe
     def run
       setup_game
 
-      loop do
-        main_game_loop
-      end
+      main_game_loop
 
       if @game_type.play_again?
         new_game
@@ -42,8 +40,12 @@ module TicTacToe
     end
 
     def main_game_loop
-      [:get_move_from_user!, :get_move_from_computer!].each do |command|
-        @game_type.send(command)
+      loop do
+        @game_type.get_move_from_user!
+        @game_type.update_board
+        break if game_over?
+
+        get_move_from_computer!
         @game_type.update_board
         break if game_over?
       end
