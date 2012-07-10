@@ -2,10 +2,7 @@ require 'test_helper'
 
 class SolverTest < MiniTest::Unit::TestCase
   def setup
-    TicTacToe::Solver.instance_eval { attr_accessor :strategy } # For testing
     @solver = TicTacToe::Solver.new(TicTacToe::Board.new, 'x')
-    @solver.strategy.class.instance_eval { attr_accessor :implementation } # For testing
-    @solver.strategy.implementation.class.instance_eval { attr_accessor :board } # For testing
   end
 
   def test_win_next_move
@@ -144,6 +141,6 @@ class SolverTest < MiniTest::Unit::TestCase
   end
 
   def board
-    @solver.strategy.implementation.board
+    @solver.board
   end
 end

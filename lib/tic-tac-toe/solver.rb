@@ -14,5 +14,9 @@ module TicTacToe
       @strategy.solve!
     end
 
+    def board
+      @strategy.board
+    end
+
   end
 end

@@ -27,5 +27,9 @@ module TicTacToe
       return if @implementation.empty_side!
       raise Exception.new("No possible moves to play!")
     end
+
+    def board
+      @implementation.board
+    end
   end
 end

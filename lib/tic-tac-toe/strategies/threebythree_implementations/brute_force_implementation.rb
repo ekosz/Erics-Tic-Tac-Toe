@@ -7,6 +7,8 @@ module TicTacToe
   # it was a winning solution
   class BruteForceImplementation
 
+    attr_reader :board
+
     def initialize(board, letter)
       @board, @letter, @state = board, letter, PotentialState.new(board, letter)
       @other_player = other_player
