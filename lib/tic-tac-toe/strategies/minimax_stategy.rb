@@ -13,14 +13,19 @@ module TicTacToe
     end
 
     class GameTree
-      def initialize(board, player, depth=1)
+      PositiveInfinity = +1.0/0.0 
+      NegativeInfinity = -1.0/0.0 
+
+      attr_reader :alpha, :beta
+
+      def initialize(board, player, depth=1, alpha=NegativeInfinity, beta=PositiveInfinity)
         @board, @player, @depth = board, player, depth
+        @alpha, @beta = alpha, beta
       end
 
       def maximized_move
         best_move  = nil
-        best_score = nil
-        best_depth = nil
+        best_depth = PositiveInfinity
 
         @board.any_empty_position.each do |row, column|
           board_instance = @board.clone.play_at(row, column, @player)
@@ -29,23 +34,25 @@ module TicTacToe
             score = score(board_instance)
             depth = @depth
           else
-            move, score, depth = GameTree.new(board_instance, @player, @depth+1).minimized_move
+            move, score, depth = GameTree.new(board_instance, @player, @depth+1, @alpha, @beta).minimized_move
           end
 
-          if best_score.nil? || score > best_score || (score == best_score && depth < best_depth)
-            best_score = score
+          if score > @alpha || (score == @alpha && depth < best_depth)
+            @alpha = score
             best_move  = [row, column]
             best_depth = depth
           end
+
+          break if @alpha >= @beta
+
         end
 
-        [best_move, best_score, best_depth]
+        [best_move, @alpha, best_depth]
       end
 
       def minimized_move
         best_move  = nil
-        best_score = nil
-        best_depth = nil
+        best_depth = PositiveInfinity
 
         @board.any_empty_position.each do |row, column|
           board_instance = @board.clone.play_at(row, column, opponet_player)
@@ -53,17 +60,20 @@ module TicTacToe
             score = score(board_instance)
             depth = @depth
           else
-            move, score, depth = GameTree.new(board_instance, @player, @depth+1).maximized_move
+            move, score, depth = GameTree.new(board_instance, @player, @depth+1, @alpha, @beta).maximized_move
           end
 
-          if best_score.nil? || score < best_score || (score == best_score && depth < best_depth)
-            best_score = score
+          if score < @beta || (score == @beta && depth < best_depth)
+            @beta = score
             best_move  = [row, column]
             best_depth = depth
           end
+
+          break if @beta <= @alpha
+
         end
 
-        [best_move, best_score, best_depth]
+        [best_move, @beta, best_depth]
       end
 
       def score(board)
