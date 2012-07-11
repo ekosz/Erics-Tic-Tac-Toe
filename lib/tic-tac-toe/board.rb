@@ -43,10 +43,13 @@ module TicTacToe
 
     # Returns the corners of the empty cells
     def any_empty_position(&block)
+      positions = []
       each_position do |row, column|
         next if get_cell(row, column)
-        yield(row, column)
+        yield(row, column) if block_given?
+        positions << [row, column]
       end
+      positions
     end
 
     # Plays a letter at a position, unless that position has already been taken
@@ -60,6 +63,7 @@ module TicTacToe
       inner = @grid[column].clone
       inner[row] ||= letter
       @grid[column] = inner
+      self
     end
 
     # Returns true if the grid is empty
@@ -90,10 +94,17 @@ module TicTacToe
 
     # Returns true if the board has a wining pattern
     def solved?
-      return true if won_across?
-      return true if won_up_and_down?
-      return true if won_diagonally?
+      letter = won_across?
+      return letter if letter
+      letter = won_up_and_down?
+      return letter if letter
+      letter = won_diagonally?
+      return letter if letter
       false
+    end
+
+    def winner
+      solved?
     end
 
     def to_s
@@ -132,9 +143,11 @@ private
     end
 
     def won_across?(grid = @grid)
-      grid.any? do |row|
-        WinningGroupChecker.new(row).won?
+      winning_letter = false
+      grid.each do |row|
+        winning_letter = row[0] if WinningGroupChecker.new(row).won?
       end
+      winning_letter
     end
 
     def won_up_and_down?
@@ -145,15 +158,17 @@ private
       right_limit = SIZE-1
       base = (0..right_limit)
       
-      return true if create_and_check_group(base) { |i| @grid[i][i] }
-      return true if create_and_check_group(base) { |i| @grid[i][right_limit-i] }
+      letter = create_and_check_group(base) { |i| @grid[i][i] }
+      return letter if letter
+      letter = create_and_check_group(base) { |i| @grid[i][right_limit-i] }
+      return letter if letter
 
       false
     end
 
     def create_and_check_group(base, &block)
       group = base.collect { |i| yield(i) }
-      return true if WinningGroupChecker.new(group).won?
+      return group[0] if WinningGroupChecker.new(group).won?
       false
     end
 

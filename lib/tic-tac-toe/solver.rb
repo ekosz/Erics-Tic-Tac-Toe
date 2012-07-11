@@ -1,4 +1,5 @@
 require_relative 'strategies/threebythree_stategy'
+require_relative 'strategies/minimax_stategy'
 require_relative 'potential_state'
 
 module TicTacToe

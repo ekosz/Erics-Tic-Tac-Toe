@@ -1,4 +1,5 @@
 require 'rake'
+include Rake::DSL
 require 'bundler'
 require 'rake/testtask'
 

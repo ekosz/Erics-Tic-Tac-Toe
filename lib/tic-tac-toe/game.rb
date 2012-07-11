@@ -53,7 +53,7 @@ module TicTacToe
     
     def game_over?
       if @board.solved?
-        @game_type.display_text("You lost!")
+        @game_type.display_text("#{@board.winner} won!")
         true
       elsif @board.full?
         @game_type.display_text("Cats game!")
@@ -64,7 +64,7 @@ module TicTacToe
     end
 
     def get_move_from_computer!
-      Solver.new(@board, @computer_letter).next_move!
+      Solver.new(@board, @computer_letter, MinimaxStrategy).next_move!
       @game_type.display_text("Computer's move (#{@computer_letter}):")
     end
 
