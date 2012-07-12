@@ -2,6 +2,9 @@
 #Author: Eric Koslow
 
 require_relative 'game_types/terminal_game'
+require_relative 'strategies/threebythree_stategy'
+require_relative 'strategies/minimax_stategy'
+require_relative 'potential_state'
 
 module TicTacToe
   # The main director of the program
@@ -64,7 +67,7 @@ module TicTacToe
     end
 
     def get_move_from_computer!
-      Solver.new(@board, @computer_letter, MinimaxStrategy).next_move!
+      MinimaxStrategy.new(@board, @computer_letter).solve!
       @game_type.display_text("Computer's move (#{@computer_letter}):")
     end
 

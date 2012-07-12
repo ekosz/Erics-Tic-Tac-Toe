@@ -2,9 +2,8 @@
 [Game]->[TerminalGame]
 [Game]->[Board]
 [Game]->[Game]
-[Game]->[Solver]
+[Game]->[<<Strategy>>]
 // Solver
-[Solver]->[<<Strategy>>]
 [<<Strategy>>]->[Board]
 [<<Strategy>>]^-.-[MinimaxStrategy]
 [<<Strategy>>]^-.-[ThreeByThreeStrategy]
