@@ -1,5 +1,3 @@
-require_relative 'winning_group_checker'
-
 module TicTacToe
   # The main class for managing the state of the game board
   # The board data is represented at a two dimensional array
@@ -145,7 +143,7 @@ private
     def won_across?(grid = @grid)
       winning_letter = false
       grid.each do |row|
-        winning_letter = row[0] if WinningGroupChecker.new(row).won?
+        winning_letter = row[0] if winning_group?(row)
       end
       winning_letter
     end
@@ -168,8 +166,12 @@ private
 
     def create_and_check_group(base, &block)
       group = base.collect { |i| yield(i) }
-      return group[0] if WinningGroupChecker.new(group).won?
+      return group[0] if winning_group?(group)
       false
+    end
+
+    def winning_group?(group)
+      !group.any? { |cell| cell.nil? } && group.uniq.size == 1
     end
 
   end
