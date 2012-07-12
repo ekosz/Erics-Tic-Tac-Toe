@@ -1,7 +1,6 @@
 // Game
 [Game]->[TerminalGame]
 [Game]->[Board]
-[Game]->[Game]
 [Game]->[<<Strategy>>]
 // Solver
 [<<Strategy>>]->[Board]

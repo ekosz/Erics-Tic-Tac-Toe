@@ -28,7 +28,9 @@ module TicTacToe
     private
 
     def new_game
-      Game.new.run
+      @board = Board.new
+      @game_type = @game_type.class.new(@board)
+      run
     end
 
     def setup_game
