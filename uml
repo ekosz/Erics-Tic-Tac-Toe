@@ -8,7 +8,7 @@
 [<<Strategy>>]^-.-[ThreeByThreeStrategy]
 // Minimax
 [MinimaxStrategy]->[Minimax::GameState]
-[MinimaxStrategy]->[<<Minimax::Evaluator>>]
+[MinimaxStrategy]->[Minimax::TicTacToeEvaluator]
 [MinimaxStrategy]->[Minimax::GameTree]
 [Minimax::GameState]->[Minimax::GameMove]
 [Minimax::GameMove]->[Minimax::GameState]
