@@ -20,5 +20,3 @@
 // ThreeByThree
 [ThreeByThreeStrategy]->[BruteforceImplementaion]
 [BruteforceImplementaion]->[PotentialState]
-// Board
-[Board]->[WinningGroupChecker]
