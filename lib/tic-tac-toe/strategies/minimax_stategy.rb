@@ -28,6 +28,7 @@ module TicTacToe
         @location, @state = location, new_state
       end
 
+      # Delegates to GameState
       def method_missing(method, *args, &block)
         return @state.send(method, *args, &block) if @state.respond_to?(method)
         super
@@ -43,7 +44,6 @@ module TicTacToe
     # This class uses 3 instance variables: @board, @player, @whos_turn
     # Should be 2
     class GameState
-      attr_reader :board # Avoid getters, setters and properties
       def initialize(board, player, whos_turn=nil)
         @board, @player = board, player
         @whos_turn = whos_turn || player
@@ -125,7 +125,7 @@ module TicTacToe
 
       private 
 
-      # has approx 7 statements (LongMethod)
+      # has approx 6 statements (LongMethod)
       def maximized_move
         best_move, best_depth = nil, PositiveInfinity
 
@@ -145,7 +145,7 @@ module TicTacToe
         [best_move, @alpha, best_depth]
       end
 
-      # has approx 7 statements (LongMethod)
+      # has approx 6 statements (LongMethod)
       def minimized_move
         best_move, best_depth = nil, PositiveInfinity
 
