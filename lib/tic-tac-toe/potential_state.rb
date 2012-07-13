@@ -51,8 +51,8 @@ private
     end
 
     def each_position(&block)
-      Board::SIZE.times do |column|
-        Board::SIZE.times do |row|
+      @board.size.times do |column|
+        @board.size.times do |row|
           yield(row, column)
         end
       end

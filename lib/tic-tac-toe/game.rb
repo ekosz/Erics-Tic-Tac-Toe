@@ -10,8 +10,9 @@ module TicTacToe
   # The main director of the program
   # Directs its gametype when to retrieve information from the user
   class Game
-    def initialize(type=TerminalGame)
-      @board = Board.new
+    def initialize(size=3, type=TerminalGame)
+      @size = size
+      @board = Board.new(nil, size)
       @game_type = type.new(@board)
     end
 
@@ -28,7 +29,7 @@ module TicTacToe
     private
 
     def new_game
-      @board = Board.new
+      @board = Board.new(nil, @size)
       @game_type = @game_type.class.new(@board)
       run
     end

@@ -59,14 +59,14 @@ module TicTacToe
     end
 
     def get_cords_from_user
-      input = get_input("Your move (#{@human_letter}) (1-9):")
-      raise IllegalMove.new("That cell is already taken") unless input =~ /^\d$/
+      input = get_input("Your move (#{@human_letter}) (1-#{@board.size**2}):")
+      raise IllegalMove.new("That cell is already taken") unless input =~ /^\d+$/
       cord_from_num(input.to_i)
     end
 
     def cord_from_num(num)
       num -= 1
-      [num % Board::SIZE, num/Board::SIZE]
+      [num % @board.size, num/@board.size]
     end
 
     def cords_with_letter(cords, letter)

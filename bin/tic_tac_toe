@@ -15,4 +15,4 @@ rescue LoadError
   raise
 end
 
-TicTacToe::Game.new.run
+TicTacToe::Game.new(ENV["SIZE"].to_i||3).run

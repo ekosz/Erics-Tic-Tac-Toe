@@ -4,13 +4,11 @@ module TicTacToe
   # It provides helper methods for access the data
   class Board
 
-    SIZE = 3.freeze
-
-    def initialize(grid=nil)
+    def initialize(grid=nil, size=3)
       #[[ nil, nil, nil],
       # [ nil, nil, nil],
       # [ nil, nil, nil]]
-      @grid = grid || [ [nil] * SIZE ] * SIZE
+      @grid = grid || [ [nil] * size ] * size
     end
 
     def get_cell(row, column)
@@ -109,7 +107,7 @@ module TicTacToe
       output = ["-----------\n"]
       @grid.each_with_index do |row, i|
         row.each_with_index do |cell, j|
-          output << "#{cell || ((i*3)+j+1)} | #{"\n" if j==2}"
+          output << "#{cell || ((i*@grid.size)+j+1)} | #{"\n" if j==@grid.size-1}"
         end
       end
       output << ["-----------\n\n"]
@@ -117,9 +115,12 @@ module TicTacToe
     end
 
     # Preform a deep clone of the board
-    # FIXME: This only works for SIZE=3
     def clone
       Board.new(@grid.map { |row| row.map { |cell| cell } })
+    end
+
+    def size
+      @grid.size
     end
 
 private 
@@ -153,7 +154,7 @@ private
     end
 
     def won_diagonally?
-      right_limit = SIZE-1
+      right_limit = @grid.size-1
       base = (0..right_limit)
       
       letter = create_and_check_group(base) { |i| @grid[i][i] }

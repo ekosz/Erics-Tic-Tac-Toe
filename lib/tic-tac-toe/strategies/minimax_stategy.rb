@@ -108,6 +108,7 @@ module TicTacToe
     #
     # This class has 63 lines. Should be <= 50
     class GameTree
+      MAXDEPTH = 5
       PositiveInfinity = +1.0/0.0 
       NegativeInfinity = -1.0/0.0 
 
@@ -138,7 +139,7 @@ module TicTacToe
             @alpha, best_move, best_depth = score, child, depth
           end
 
-          break if @alpha >= @beta
+          break if @alpha >= @beta || @depth >= MAXDEPTH
 
         end
 
@@ -157,7 +158,7 @@ module TicTacToe
             @beta, best_move, best_depth = score, child, depth
           end
 
-          break if @beta <= @alpha
+          break if @beta <= @alpha || @depth >= MAXDEPTH
 
         end
 
