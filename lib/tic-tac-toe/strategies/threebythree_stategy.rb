@@ -2,7 +2,7 @@ require_relative 'threebythree_implementations/brute_force_implementation'
 
 module TicTacToe
   # Strategy used when playing on a 3x3 board
-  class ThreebythreeStrategy
+  class ThreebythreeStrategy < Solver
     def initialize(board, letter, implementation=BruteForceImplementation)
       @implementation = implementation.new(board, letter)
     end
@@ -16,15 +16,30 @@ module TicTacToe
     # 6) Play the opposite corner of your opponent
     # 7) Play in an empty corner
     # 8) Play in an empty side
-    def solve!
-      return if @implementation.win!
-      return if @implementation.block!
-      return if @implementation.fork!
-      return if @implementation.block_fork!
-      return if @implementation.center!
-      return if @implementation.oposite_corner!
-      return if @implementation.empty_corner!
-      return if @implementation.empty_side!
+    def solve
+      move =  @implementation.win
+      return move if move
+
+      move = @implementation.block
+      return move if move
+
+      move = @implementation.fork
+      return move if move
+
+      move = @implementation.block_fork
+      return move if move
+
+      move = @implementation.center
+      return move if move
+
+      move = @implementation.oposite_corner
+      return move if move
+
+      move = @implementation.empty_corner
+      return move if move
+
+      move = @implementation.empty_side
+      return move if move
       raise Exception.new("No possible moves to play!")
     end
 

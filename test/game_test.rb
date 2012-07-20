@@ -1,23 +1,32 @@
 require 'test_helper'
 
 class GameTest < MiniTest::Unit::TestCase
-  def setup
-    @game = TicTacToe::Game.new
-    @game.instance_variable_set("@computer_letter", "x")
-    
-    # Mock out user move from user
-    game_type = @game.instance_variable_get("@game_type")
-    def game_type.get_move_from_user!;  end
-    # Mock out output
-    def game_type.update_board; end
-    def game_type.display_text(text); end
-    def @game.update_board; end
+
+  class TerminalGameMock
+    def initialize(board)
+      @board = board
+    end
+    def get_move_from_user
+      TicTacToe::MinimaxStrategy.new(@board, 'o').solve
+    end
+    def update_board; end
+    def display_text(text); end
+    def update_board; end
+    def computer_goes_first?; true end
+    def play_again?; false end
+    def select(choices); choices.first end
   end
 
-  def test_main_game_loop_doesnt_raise_error
+  def setup
+    @game = TicTacToe::Game.new(3, TerminalGameMock)
+    @game.instance_variable_set("@computer_letter", "x")
+    @game.instance_variable_set("@human_letter", "o")
+  end
+
+  def test_run_doesnt_raise_error
     success = true
     begin
-      @game.send(:main_game_loop)
+      @game.run
     rescue => e
       success = false
       message = e.message

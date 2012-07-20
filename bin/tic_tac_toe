@@ -15,4 +15,6 @@ rescue LoadError
   raise
 end
 
-TicTacToe::Game.new(ENV["SIZE"].to_i||3).run
+DefualtBoardSize = 3
+
+TicTacToe::Game.new(ENV["SIZE"] ? ENV["SIZE"].to_i : DefualtBoardSize).run
