@@ -143,7 +143,7 @@ module SharedSolverTests
   private
 
   def set_grid(grid)
-    @board.instance_variable_set("@grid", grid)
+    @board.grid = grid
   end
 
   def solve!

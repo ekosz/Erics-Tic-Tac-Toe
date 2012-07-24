@@ -20,18 +20,10 @@ class GameTest < MiniTest::Unit::TestCase
 
   def setup
     @game = TicTacToe::Game.new(3, TerminalGameMock)
-    @game.instance_variable_set("@computer_letter", "x")
-    @game.instance_variable_set("@human_letter", "o")
   end
 
-  def test_run_does_not_raise_error
-    success = true
-    begin
-      @game.run
-    rescue => e
-      success = false
-      message = e.message
-    end
-    assert success, "Main game loop raised error: #{message}"
+  def test_can_play_a_entire_game
+    @game.run
+    assert @game.board.solved?
   end
 end

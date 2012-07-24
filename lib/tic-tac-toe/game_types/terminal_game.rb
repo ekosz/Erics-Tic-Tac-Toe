@@ -13,14 +13,10 @@ module TicTacToe
     end
 
     def computer_goes_first?
-      unless get_input("Would you like to play first or second? (f/s)") =~ 
-                        /^(f|first)$/i
-        @human_letter = X
-        true
-      else
-        @human_letter = O
-        false
-      end
+      input = get_input("Would you like to play first or second? (f/s)")
+
+      return true unless input =~ /^(f|first)$/i
+      false
     end
 
     def get_move_from_user
@@ -43,10 +39,13 @@ module TicTacToe
       loop do
         output = "Select the solver:\n"
         choices.each_with_index { |choice, i| output += "#{i+1}: #{choice}\n" }
+
         input = get_input(output)
+
         if input =~ /^\d+$/ and input.to_i <= choices.size
           return choices[input.to_i-1]
         end
+
         display_text("Not a valid choice") 
       end
     end
@@ -71,8 +70,10 @@ module TicTacToe
     end
 
     def get_cords_from_user
-      input = get_input("Your move (#{@human_letter}) (1-#{@board.size**2}):")
+      input = get_input("Your move (1-#{@board.size**2}):")
+
       raise IllegalMove.new("That is not a real location") unless input =~ /^\d+$/
+
       cord_from_num(input.to_i)
     end
 

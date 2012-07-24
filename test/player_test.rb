@@ -4,7 +4,7 @@ class BoardMock; end
 
 module SharedPlayerTests
   def test_gets_move
-    refute_nil @player.get_move(BoardMock.new)
+    assert_equal [0, 0], @player.get_move(BoardMock.new)
   end
 
   def test_letter

@@ -5,54 +5,62 @@ class BoardTest < MiniTest::Unit::TestCase
     @board = TicTacToe::Board.new
   end
 
-  def test_empty
+  def test_a_new_board_is_empty
     # Board empty when created
     assert @board.empty?
-
+  end
+  
+  def test_a_board_after_played_is_no_longer_empty
     # Board not longer empty after letter placed
     @board.play_at(0,0,'o')
     refute @board.empty?
   end
 
-  def test_full
-    # Board not full when empty
+  def test_a_new_board_is_not_empty
     refute @board.full?
+  end
 
+  def test_full
     # Board full when no cells are nil
     @board.grid = [ %w(x o x), %w(o x o), %w(x o x)]
     assert @board.full?
   end
 
-  def test_only_one
+  def test_a_empty_board_is_not_only_one
     # False when empty
     refute @board.only_one?
-
+  end
+  
+  def test_a_board_knows_when_only_one_peice
     # True when one
     @board.grid = [ ['x',nil,nil], [nil,nil,nil], [nil,nil,nil] ]
     assert @board.only_one?
+  end
 
+  def test_a_board_with_more_than_one_place_is_not_only_one
     # False when more than one
     @board.grid = [ ['x','x',nil], [nil,nil,nil], [nil,nil,nil] ]
     refute @board.only_one?
   end
 
-  def test_get_cell
+  def test_get_cell_returns_nil_when_nothing_there
     # Returns nil when nothing in cell
     assert_nil @board.get_cell(0, 0)
+  end
 
+  def test_play_at
+    # Cells are proper set and override nil values
+    @board.play_at(1, 1, 'x')
+    assert_equal 'x', @board.get_cell(1,1)
+  end
+
+  def test_get_cell
     # Returns the right letter after they've been played
     @board.play_at(0,0,"o")
     assert_equal "o", @board.get_cell(0, 0)
 
     @board.play_at(1,2,"o")
     assert_equal "o", @board.get_cell(1, 2)
-  end
-
-  def test_play_at
-    # Cells are proper set and override nil values
-    assert_nil @board.get_cell(1,1)
-    @board.play_at(1, 1, 'x')
-    assert_equal 'x', @board.get_cell(1,1)
   end
 
   def test_can_not_override_values

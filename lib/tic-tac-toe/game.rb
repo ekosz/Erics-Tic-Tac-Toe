@@ -13,6 +13,8 @@ module TicTacToe
   class Game
     Solvers = [MinimaxStrategy, ThreebythreeStrategy]
 
+    attr_reader :board
+
     def initialize(size=3, type=TerminalGame)
       @size, @type = size, type
     end
