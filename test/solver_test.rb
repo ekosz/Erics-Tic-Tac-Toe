@@ -172,7 +172,7 @@ class ThreebyThreeSolverTest < MiniTest::Unit::TestCase
     # Will play in the center if its an empty @board
     assert @board.empty?
     solve!
-    assert_equal 'x', @board.center_cell
+    assert_equal 'x', @board.get_cell(@board.size/2, @board.size/2)
     assert @board.only_one?
   end
   

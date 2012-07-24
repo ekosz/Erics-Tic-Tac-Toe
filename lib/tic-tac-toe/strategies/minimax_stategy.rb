@@ -2,7 +2,7 @@ module TicTacToe
   # This implements the Minimax algorithum with AlphaBeta Prunning
   # http://en.wikipedia.org/wiki/Minimax
   # http://en.wikipedia.org/wiki/Alpha-beta_pruning
-  class MinimaxStrategy < Solver
+  class MinimaxStrategy
 
     attr_reader :board # Avoid getters, setters and properties
 

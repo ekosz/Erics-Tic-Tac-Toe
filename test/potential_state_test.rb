@@ -1,11 +1,6 @@
 require 'test_helper'
 
 class PotentialStateTest < MiniTest::Unit::TestCase
-  def setup
-    TicTacToe::PotentialState.instance_eval { attr_accessor :board }
-    @state = TicTacToe::PotentialState.new(TicTacToe::Board.new, 'x')
-  end
-
   def test_solved
     set_grid([ ['x', 'x', 'x'], [nil, nil, nil], [nil, nil, nil] ])
     assert @state.solved?
@@ -51,6 +46,8 @@ class PotentialStateTest < MiniTest::Unit::TestCase
 private
 
   def set_grid(grid)
-    @state.board.instance_variable_set("@grid", grid)
+    board = TicTacToe::Board.new
+    board.grid = grid
+    @state = TicTacToe::ThreebyThree::PotentialState.new(board, 'x')
   end
 end

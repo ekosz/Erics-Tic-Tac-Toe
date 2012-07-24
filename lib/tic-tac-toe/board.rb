@@ -4,27 +4,17 @@ module TicTacToe
   # It provides helper methods for access the data
   class Board
 
-    def initialize(grid=nil, size=3)
+    attr_writer :grid
+
+    def initialize(size=3)
       #[[ nil, nil, nil],
       # [ nil, nil, nil],
       # [ nil, nil, nil]]
-      @grid = grid || [ [nil] * size ] * size
+      @grid = [ [nil] * size ] * size
     end
 
     def get_cell(row, column)
       @grid[column][row]
-    end
-
-    # Returns the closest middle cell
-    def center_cell
-      mid = @grid.size/2
-      get_cell(mid, mid)
-    end
-
-    # Sets the closet middle cell if its not already set
-    def center_cell=(letter)
-      mid = @grid.size/2
-      play_at(mid, mid, letter)
     end
 
     # Returns the corners of the grid
@@ -116,7 +106,9 @@ module TicTacToe
 
     # Preform a deep clone of the board
     def clone
-      Board.new(@grid.map { |row| row.map { |cell| cell } })
+      board = Board.new
+      board.grid = @grid.map { |row| row.map { |cell| cell } }
+      board
     end
 
     def size

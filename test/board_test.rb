@@ -2,7 +2,6 @@ require 'test_helper'
 
 class BoardTest < MiniTest::Unit::TestCase
   def setup
-    TicTacToe::Board.instance_eval { attr_accessor :grid } # For testing purposes
     @board = TicTacToe::Board.new
   end
 
@@ -47,24 +46,6 @@ class BoardTest < MiniTest::Unit::TestCase
 
     @board.play_at(1,2,"o")
     assert_equal "o", @board.get_cell(1, 2)
-  end
-
-  def test_center_cell
-    # Center cell is nil in empty grid
-    assert_nil @board.center_cell
-
-    # Returns the correct letter after its been placed
-    @board.play_at(1,1,'o')
-    assert_equal "o", @board.center_cell
-
-    # Does not override values after they've been placed
-    @board.center_cell = 'x'
-    assert_equal "o", @board.center_cell
-
-    # Can use helper when the center cell is nil
-    @board = TicTacToe::Board.new
-    @board.center_cell = 'x'
-    assert_equal "x", @board.center_cell
   end
 
   def test_corners

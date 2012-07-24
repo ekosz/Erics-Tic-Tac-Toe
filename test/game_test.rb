@@ -1,5 +1,6 @@
 require 'test_helper'
 
+
 class GameTest < MiniTest::Unit::TestCase
 
   class TerminalGameMock
