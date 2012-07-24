@@ -6,15 +6,15 @@ class PotentialStateTest < MiniTest::Unit::TestCase
     assert @state.solved?
   end
 
-  def test_fork_exsits
+  def test_fork_exists
     set_grid([ ['x', nil, 'x'], [nil, 'x', nil], [nil, nil, nil] ])
-    assert @state.fork_exsits?
+    assert @state.fork_exists?
 
     set_grid([ ['x', nil, 'x'], [nil, 'o', nil], ['x', nil, nil] ])
-    assert @state.fork_exsits?
+    assert @state.fork_exists?
 
     set_grid([ ['o', nil, 'o'], [nil, 'x', nil], ['o', nil, nil] ])
-    refute @state.fork_exsits?
+    refute @state.fork_exists?
     
   end
 

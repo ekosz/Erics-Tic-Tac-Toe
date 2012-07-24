@@ -16,7 +16,7 @@ module TicTacToe
     # 8) Play in an empty side
     def solve
       [:win, :block, :fork, :block_fork, 
-        :center, :oposite_corner, :empty_corner, :empty_side].each do |step|
+        :center, :opposite_corner, :empty_corner, :empty_side].each do |step|
         move = @heuristic.send(step)
         return move if move
         end
@@ -99,10 +99,10 @@ module TicTacToe
 
       # Cycle through all of the corners looking for the opponent's letter
       # If one is found, place letter at the opposite corner
-      def oposite_corner
+      def opposite_corner
         first = 0
         last = @board.size - 1
-        @board.corners.each_with_index do |corner, index|
+        corners.each_with_index do |corner, index|
           if corner == @other_player
             next if @board.get_cell(*opposite_corner_from_index(index).compact)
             return opposite_corner_from_index(index)
@@ -113,7 +113,7 @@ module TicTacToe
 
       # Cycle though all of the corners, until one is found that is empty
       def empty_corner
-        @board.corners.each_with_index do |corner, index|
+        corners.each_with_index do |corner, index|
           next if corner
           return corner_from_index(index)
         end
@@ -122,13 +122,20 @@ module TicTacToe
 
       # Place letter at a random empty cell, at this point it should only be sides left
       def empty_side
-        @board.any_empty_position do |row, column|
+        @board.empty_positions do |row, column|
           return [row, column] 
         end
         false
       end
 
       private
+
+      def corners
+        [@board.get_cell(0, 0), # Top Left
+         @board.get_cell(@board.size-1, 0), # Top Right
+         @board.get_cell(@board.size-1, @board.size-1), # Bottom Right
+         @board.get_cell(0, @board.size-1)] # Bottom Left
+      end
 
       def corner_from_index(index)
         first = 0
@@ -183,15 +190,13 @@ module TicTacToe
             temp_board.play_at(*block(temp_board, @other_player), @other_player)
 
             # Did I just create another fork with that block?
-            next if PotentialState.new(temp_board, @other_player).fork_exsits?
+            next if PotentialState.new(temp_board, @other_player).fork_exists?
 
             return [row, column]
 
           end
         end
       end
-
-
     end
     # Represents a state of players move
     # This is comprised of a board and letter (player)
@@ -214,7 +219,7 @@ module TicTacToe
         forking_positions.each { |position| yield(*position) }
       end
 
-      def fork_exsits?
+      def fork_exists?
         winning_positions_count >= 2
       end
 
@@ -228,7 +233,7 @@ module TicTacToe
       def forking_positions
         positions = [] 
         each_position do |row, column|
-          positions << [row, column] if at(row, column).fork_exsits?
+          positions << [row, column] if at(row, column).fork_exists?
         end
         positions
       end

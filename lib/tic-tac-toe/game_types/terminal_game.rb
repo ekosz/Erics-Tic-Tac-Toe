@@ -1,6 +1,6 @@
 module TicTacToe
   # Terminal GameType
-  # Interacts with the user through the termial
+  # Interacts with the user through the terminal
   # Uses puts for output, and gets for input
   class TerminalGame
     # Internal Error used when a user tries pulling an illegal move
@@ -49,7 +49,6 @@ module TicTacToe
         end
         display_text("Not a valid choice") 
       end
-
     end
 
     def update_board

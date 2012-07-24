@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module SharedSolverTests
-  def test_win_horizontaly
+  def test_win_horizontally
     refute @board.solved?
 
     # Will win, when there is a winning move
@@ -59,7 +59,7 @@ module SharedSolverTests
     assert_equal 'x', @board.get_cell(2, 0) 
   end
 
-  def test_blocks_vertacally
+  def test_blocks_vertically
 
     set_grid([ ['x', 'o', nil],
                [nil, nil, nil],
@@ -176,7 +176,7 @@ class ThreebyThreeSolverTest < MiniTest::Unit::TestCase
     assert @board.only_one?
   end
   
-  def test_oposite_corner
+  def test_opposite_corner
     # 1 | 2 | o
     # 4 | x | 6
     # 7 | 8 | 9

@@ -2,8 +2,8 @@
 #Author: Eric Koslow
 
 require_relative 'game_types/terminal_game'
-require_relative 'strategies/threebythree_stategy'
-require_relative 'strategies/minimax_stategy'
+require_relative 'strategies/threebythree_strategy'
+require_relative 'strategies/minimax_strategy'
 require_relative 'players/human_player'
 require_relative 'players/computer_player'
 
@@ -18,14 +18,8 @@ module TicTacToe
     end
 
     def run
-      loop do
-
-        setup_game
-
-        main_game_loop
-
-        break unless @interface.play_again?
-      end
+      setup_game
+      main_game_loop
     end
 
     private
@@ -51,8 +45,13 @@ module TicTacToe
 
         play_move @current_player.get_move(@board), @current_player.letter
 
-        break if game_over?
         @current_player = next_player
+
+        if game_over?
+          break unless @interface.play_again?
+          setup_game
+        end
+
       end
     end
     

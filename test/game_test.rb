@@ -24,7 +24,7 @@ class GameTest < MiniTest::Unit::TestCase
     @game.instance_variable_set("@human_letter", "o")
   end
 
-  def test_run_doesnt_raise_error
+  def test_run_does_not_raise_error
     success = true
     begin
       @game.run

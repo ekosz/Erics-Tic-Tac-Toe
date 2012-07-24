@@ -11,6 +11,5 @@ module TicTacToe
     def get_move(board)
       @solver.new(board, @letter).solve
     end
-
   end
 end

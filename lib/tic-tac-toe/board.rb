@@ -10,25 +10,15 @@ module TicTacToe
       #[[ nil, nil, nil],
       # [ nil, nil, nil],
       # [ nil, nil, nil]]
-      @grid = [ [nil] * size ] * size
+      @grid = Array.new(size) { Array.new(size) { nil } }
     end
 
     def get_cell(row, column)
       @grid[column][row]
     end
 
-    # Returns the corners of the grid
-    def corners
-      top_row = @grid.first
-      bottom_row = @grid.last
-      [top_row.first,     # Top Left
-       top_row.last,      # Top Right
-       bottom_row.last,   # Bottom Right
-       bottom_row.first]  # Bottom Left
-    end
-
     # Returns the corners of the empty cells
-    def any_empty_position(&block)
+    def empty_positions(&block)
       positions = []
       each_position do |row, column|
         next if get_cell(row, column)
@@ -40,15 +30,7 @@ module TicTacToe
 
     # Plays a letter at a position, unless that position has already been taken
     def play_at(row, column, letter)
-      # Weird bug I found in ruby 1.9.3-p0
-      # Given a @grid of [ [nil,nil,nil], [nil,nil,nil], [nil,nil,nil] ]
-      # If you call @grid[0][0] = 'x'
-      # I aspect @grid to be [ ['x',nil,nil], [nil,nil,nil], [nil,nil,nil] ]
-      # What happens is that @grid is [ ['x',nil,nil], ['x',nil,nil], ['x',nil,nil] ]
-      # This is a workaround for that
-      inner = @grid[column].clone
-      inner[row] ||= letter
-      @grid[column] = inner
+      @grid[column][row] ||= letter
       self
     end
 

@@ -48,23 +48,6 @@ class BoardTest < MiniTest::Unit::TestCase
     assert_equal "o", @board.get_cell(1, 2)
   end
 
-  def test_corners
-    # All of the corners are nil in an empty grid
-    @board.corners.each { |corner| assert_nil corner }
-
-    # Will return the corners in the proper order (clockwise)
-    # 0 => Top Left
-    # 1 => Top Right
-    # 2 => Bottom Right
-    # 3 => Bottom Left
-    @board.play_at(0,0,'a')
-    @board.play_at(2,0,'b')
-    @board.play_at(2,2,'c')
-    @board.play_at(0,2,'d')
-    answers = %w( a b c d )
-    @board.corners.each_with_index { |corner, i| assert_equal answers[i], corner }
-  end
-
   def test_play_at
     # Cells are proper set and override nil values
     assert_nil @board.get_cell(1,1)
@@ -72,7 +55,7 @@ class BoardTest < MiniTest::Unit::TestCase
     assert_equal 'x', @board.get_cell(1,1)
   end
 
-  def test_can_not_overide_values
+  def test_can_not_override_values
     assert_nil @board.get_cell(1,1)
     @board.play_at(1, 1, 'x')
     assert_equal 'x', @board.get_cell(1,1)
@@ -80,7 +63,7 @@ class BoardTest < MiniTest::Unit::TestCase
     assert_equal 'x', @board.get_cell(1,1)
   end
 
-  def test_solved_acoss
+  def test_solved_across
     refute @board.solved?
 
     @board.grid = [ %w(x x x), [nil, nil, nil], [nil, nil, nil]]
