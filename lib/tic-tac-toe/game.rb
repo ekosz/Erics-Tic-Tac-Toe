@@ -33,12 +33,11 @@ module TicTacToe
       solver = @interface.select(Solvers)
 
       if @interface.computer_goes_first?
-        @current_player = @player_1 = ComputerPlayer.new(O, solver)
-        @player_2 = HumanPlayer.new(X, @type)
-      else
-        @current_player = @player_1 = HumanPlayer.new(O, @type)
-        @player_2 = ComputerPlayer.new(X, solver)
+        set_players(ComputerPlayer.new(X, solver), HumanPlayer.new(O, @type))
+        return
       end
+
+      set_players(HumanPlayer.new(X, @type), ComputerPlayer.new(O, solver))
     end
 
     def main_game_loop
@@ -50,6 +49,7 @@ module TicTacToe
         @current_player = next_player
 
         if game_over?
+          @interface.update_board
           break unless @interface.play_again?
           setup_game
         end
@@ -71,6 +71,11 @@ module TicTacToe
 
     def play_move(move, letter)
       @board.play_at(*move, letter)
+    end
+
+    def set_players(player_1, player_2)
+      @current_player = @player_1 = player_1
+      @player_2 = player_2
     end
 
     def next_player
