@@ -1,0 +1,13 @@
+<div class="board">
+  <% @grid.each do |row| %>
+    <div class="row">
+      <% row.each do |cell| %>
+        <div class="cell"><%= cell %></div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<h1>Game over <%= params[:winner] %> won!</h1>
+
+<p><a href='/'>Play Again?</a></p>

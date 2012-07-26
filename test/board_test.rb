@@ -5,6 +5,11 @@ class BoardTest < MiniTest::Unit::TestCase
     @board = TicTacToe::Board.new
   end
 
+  def test_grid_can_be_set
+    @board.grid = 'Foo'
+    assert_equal 'Foo', @board.grid
+  end
+
   def test_a_new_board_is_empty
     # Board empty when created
     assert @board.empty?

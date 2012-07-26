@@ -15,75 +15,66 @@ module TicTacToe
 
     attr_reader :board
 
-    def initialize(size=3, type=TerminalGame)
-      @size, @type = size, type
+    attr_reader :player_moves
+
+    def initialize(params={})
+      @board = Board.new
+      @board.grid = params[:board] || [[nil,nil,nil],[nil,nil,nil],[nil,nil,nil]]
+
+      @player_moves = {
+        'x' => params[:x],
+        'o' => params[:o]
+      }
+      @first = params[:first] || 'x'
     end
 
-    def run
-      setup_game
-      main_game_loop
+    def play
+      player_sorter = proc { |player, move| player == @first ? -1 : 1 }
+      @player_moves.sort_by(&player_sorter).each  do |player, move|
+        next if move == 'skip'
+
+        move = move_via_computer(player) unless move
+
+        move = number_to_cords(move) unless move.is_a?(Array)
+
+        @board.play_at(*move, player)
+        break if over?
+      end
+      self
+    end
+
+    def grid
+      @board.grid
+    end
+
+    def solved?
+      @board.solved?
+    end
+
+    def cats?
+      @board.full? && !solved?
+    end
+
+    def winner
+      @board.winner
     end
 
     private
 
-    def setup_game
-      @board = Board.new(@size)
-      @interface = @type.new(@board)
-
-      solver = @interface.select(Solvers)
-
-      if @interface.computer_goes_first?
-        set_players(ComputerPlayer.new(X, solver), HumanPlayer.new(O, @type))
-        return
-      end
-
-      set_players(HumanPlayer.new(X, @type), ComputerPlayer.new(O, solver))
+    def over?
+      solved? || cats?
     end
 
-    def main_game_loop
-      loop do
-        @interface.update_board
+    def move_via_computer(letter)
+      MinimaxStrategy.new(@board, letter).solve
+    end
 
-        play_move @current_player.get_move(@board), @current_player.letter
 
-        @current_player = next_player
-
-        if game_over?
-          @interface.update_board
-          break unless @interface.play_again?
-          setup_game
-        end
-
-      end
+    def number_to_cords(num)
+      num = num.to_i
+      num -= 1
+      [num % @board.size, num/@board.size]
     end
     
-    def game_over?
-      if @board.solved?
-        @interface.display_text("#{@board.winner} won!")
-        true
-      elsif @board.full?
-        @interface.display_text("Cats game!")
-        true
-      else
-        false
-      end
-    end
-
-    def play_move(move, letter)
-      @board.play_at(*move, letter)
-    end
-
-    def set_players(player_1, player_2)
-      @current_player = @player_1 = player_1
-      @player_2 = player_2
-    end
-
-    def next_player
-      case @current_player
-      when @player_1 then @player_2
-      when @player_2 then @player_1
-      end
-    end
-
   end
 end

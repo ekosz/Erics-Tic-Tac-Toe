@@ -1,0 +1,10 @@
+<div class="board">
+  <% @game.grid.each_with_index do |row, i| %>
+    <div class="row">
+      <% row.each_with_index do |cell, j| %>
+        <% move = (i*3)+(j+1) %>
+        <a class="cell cell<%= move %>" href='/play?first=<%= params[:first] %>&<%= params[:first] %>=<%= move %>&board=<%= @game.grid.to_json %>'><%= cell || move %></a>
+      <% end %>
+    </div>
+  <% end %>
+</div>

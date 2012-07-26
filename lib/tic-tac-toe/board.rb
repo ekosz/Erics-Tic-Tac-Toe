@@ -4,7 +4,7 @@ module TicTacToe
   # It provides helper methods for access the data
   class Board
 
-    attr_writer :grid
+    attr_accessor :grid
 
     def initialize(size=3)
       #[[ nil, nil, nil],
