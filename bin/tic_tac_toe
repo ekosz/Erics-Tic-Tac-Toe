@@ -15,6 +15,34 @@ rescue LoadError
   raise
 end
 
-DefualtBoardSize = 3
-board_size = ENV["SIZE"] ? ENV["SIZE"].to_i : DefualtBoardSize
-TicTacToe::Game.new(board_size).run
+def setup
+  game = TicTacToe::Game.new
+  terminal = TicTacToe::TerminalGame.new(game.board)
+  first = (terminal.computer_goes_first? ? 'o' : 'x')
+
+  [game, terminal, first]
+end
+
+game, terminal, first = setup
+
+loop do
+
+  terminal.update_board
+
+  params = {
+    :board => game.grid,
+    :first => first,
+    "#{first}".to_sym => terminal.get_move_from_user
+  }
+
+  game = TicTacToe::Game.new(params).play
+
+
+  if game.solved? || game.cats?
+    terminal.update_board
+    break unless terminal.play_again?
+    game, terminal, first = setup
+  end
+
+end
+
