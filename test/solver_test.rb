@@ -140,6 +140,11 @@ module SharedSolverTests
     assert_equal 'x', @board.get_cell(2, 1)
   end
 
+  def test_raises_exception_on_full_board
+    set_grid([%w(x o x), %w(o o x), %w(o x o)])
+    assert_raises(RuntimeError) { solve! }
+  end
+
   private
 
   def set_grid(grid)
@@ -160,13 +165,19 @@ class MinimaxSolverTest < MiniTest::Unit::TestCase
   include SharedSolverTests
 end
 
-class ThreebyThreeSolverTest < MiniTest::Unit::TestCase
+class ThreeByThreeSolverTest < MiniTest::Unit::TestCase
   def setup
     @board = TicTacToe::Board.new
-    @solver = TicTacToe::ThreebythreeStrategy.new(@board, 'x')
+    @solver = TicTacToe::ThreeByThreeStrategy.new(@board, 'x')
   end
   
   include SharedSolverTests
+
+  def test_block_fork
+    set_grid([['o', nil, nil], ['x', 'o', nil], [nil, nil, 'x']])
+    solve!
+    assert_equal 'x', @board.get_cell(1, 0)
+  end
   
   def test_center
     # Will play in the center if its an empty @board
@@ -187,5 +198,22 @@ class ThreebyThreeSolverTest < MiniTest::Unit::TestCase
     set_grid([['o',nil,nil],[nil,'x',nil],[nil,nil,nil]])
     solve!
     assert_equal 'x', @board.get_cell(2, 2)
+  end
+
+  def test_corners
+    set_grid([['x', nil, nil], [nil, 'o', nil], [nil, nil, nil]])
+    solve!
+    assert_equal 'x', @board.get_cell(2,0)
+
+    set_grid([['x', 'o', 'x'], [nil, 'o', nil], ['o', 'x', nil]])
+    solve!
+    assert_equal 'x', @board.get_cell(2, 2)
+
+    # x | o | x
+    # o | o | x
+    #   | x | o
+    set_grid([['x', 'o', 'x'], ['o', 'o', 'x'], [nil, 'x', 'o']])
+    solve!
+    assert_equal 'x', @board.get_cell(0, 2)
   end
 end

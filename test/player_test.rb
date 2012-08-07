@@ -10,16 +10,15 @@ module SharedPlayerTests
   def test_letter
     assert_equal 'x', @player.letter
   end
+
+  def test_has_next_move
+    assert @player.has_next_move?
+  end
 end
 
 class HumanPlayerTest < MiniTest::Unit::TestCase
-  class TerminalGameMock
-    def get_move_from_user
-      [0, 0]
-    end
-  end
   def setup
-    @player = TicTacToe::HumanPlayer.new("x", TerminalGameMock)
+    @player = TicTacToe::HumanPlayer.new('letter' => "x", 'move' => [0,0])
   end
 
   include SharedPlayerTests
@@ -28,13 +27,12 @@ end
 
 class ComputerPlayerTest < MiniTest::Unit::TestCase
   class SolverMock
-    def solve
+    def best_move
       [0, 0]
     end
   end
-
   def setup
-    @player = TicTacToe::ComputerPlayer.new("x", SolverMock)
+    @player = TicTacToe::ComputerPlayer.new({'letter' => "x"}, SolverMock)
   end
 
   include SharedPlayerTests

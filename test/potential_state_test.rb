@@ -48,6 +48,6 @@ private
   def set_grid(grid)
     board = TicTacToe::Board.new
     board.grid = grid
-    @state = TicTacToe::ThreebyThree::PotentialState.new(board, 'x')
+    @state = TicTacToe::ThreeByThree::PotentialState.new(board, 'x')
   end
 end

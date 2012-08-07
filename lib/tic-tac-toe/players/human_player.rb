@@ -1,14 +1,22 @@
 module TicTacToe
-  class HumanPlayer
 
+  class HumanPlayer 
     attr_reader :letter
 
-    def initialize(letter, interface)
-      @letter, @interface = letter, interface
+    def initialize(params)
+      @letter, @move = params['letter'], params['move']
     end
 
-    def get_move(board)
-      @interface.new(board).get_move_from_user
+    def get_move(_board)
+      move = @move
+      @move = nil
+      move
     end
+
+    def has_next_move?
+      !!@move
+    end
+
   end
+
 end

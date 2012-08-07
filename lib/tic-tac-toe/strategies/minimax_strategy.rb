@@ -11,6 +11,7 @@ module TicTacToe
     end
 
     def solve
+      raise "Can not solve a full board" if @board.full?
       Minimax.new(@board, @letter).best_move
     end
   end

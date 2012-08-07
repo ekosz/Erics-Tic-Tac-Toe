@@ -1,2 +1,16 @@
-<h1><a href='/play?first=x&x=skip&o=skip&board=<%= @game.grid.to_json %>'>Play First</a></h1>
-<h1><a href='/play?first=o&o=skip&board=<%= @game.grid.to_json %>'>Play Secound</a></h1>
+<h1>
+  <form method="post" action="/play">
+    <input type="hidden" name="player_1" value='<%= player_json('o') %>' />
+    <input type="hidden" name="player_2" value='<%= player_json('x') %>' />
+    <input type="hidden" name="board" value='<%= @game.grid.to_json %>' />
+    <a href="#" onclick="this.parentElement.submit()">Play First</a>
+  </form>
+</h1>
+<h1>
+  <form method="post" action="/play">
+    <input type="hidden" name="player_1" value='<%= player_json('x') %>' />
+    <input type="hidden" name="player_2" value='<%= player_json('o', 'computer') %>' />
+    <input type="hidden" name="board" value='<%= @game.grid.to_json %>' />
+    <a href="#" onclick="this.parentElement.submit()">Play Secound</a>
+  </form>
+</h1>

@@ -1,9 +1,17 @@
+<% letter_1 = JSON.parse(params[:player_1])['letter'] %>
+<% letter_2 = JSON.parse(params[:player_2])['letter'] %>
+
 <div class="board">
   <% @game.grid.each_with_index do |row, i| %>
     <div class="row">
       <% row.each_with_index do |cell, j| %>
         <% move = (i*3)+(j+1) %>
-        <a class="cell cell<%= move %>" href='/play?first=<%= params[:first] %>&<%= params[:first] %>=<%= move %>&board=<%= @game.grid.to_json %>'><%= cell || move %></a>
+        <form method="post">
+          <input type="hidden" name="player_1" value='<%= player_json(letter_1, 'human', move) %>' />
+          <input type="hidden" name="player_2" value='<%= player_json(letter_2, 'computer') %>' />
+          <input type="hidden" name="board" value='<%= @game.grid.to_json %>' />
+          <a class="cell cell<%= move %>" href="#" onclick="this.parentElement.submit(); return false;"><%= cell || move %></a>
+        </form>
       <% end %>
     </div>
   <% end %>

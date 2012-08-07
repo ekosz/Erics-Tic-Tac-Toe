@@ -7,11 +7,11 @@ class TerminalGameTest < MiniTest::Unit::TestCase
     attr_reader :output
 
     def initialize(output=nil)
-      @input = output
+      @input = Array(output)
     end
 
     def gets
-      @input
+      @input.pop
     end
 
     def puts(text); @output = text end
@@ -29,6 +29,11 @@ class TerminalGameTest < MiniTest::Unit::TestCase
 
     game = TicTacToe::TerminalGame.new(TicTacToe::Board.new, IoMock.new("9"))
     assert_equal [2, 2], game.get_move_from_user
+  end
+
+  def test_handle_bad_input
+    game = TicTacToe::TerminalGame.new(TicTacToe::Board.new, IoMock.new(["1", "a"]))
+    assert_equal [0, 0], game.get_move_from_user
   end
 
   def test_play_again
@@ -63,5 +68,11 @@ class TerminalGameTest < MiniTest::Unit::TestCase
     mock = IoMock.new("2")
     game = TicTacToe::TerminalGame.new(nil, mock)
     assert_equal "BarFoo", game.select(["FooBar", "BarFoo"])
+  end
+
+  def test_select_bad_choice
+    mock = IoMock.new(["1", 'x'])
+    game = TicTacToe::TerminalGame.new(nil, mock)
+    assert_equal "FooBar", game.select(["FooBar", "BarFoo"])
   end
 end

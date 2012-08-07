@@ -444,6 +444,8 @@ td {
   margin: 50px auto;
 }
 
+.board .row > form { display: inline-block; }
+
 .cell {
   display:inline-block;
   width:65px;

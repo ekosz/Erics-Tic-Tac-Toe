@@ -115,4 +115,15 @@ class BoardTest < MiniTest::Unit::TestCase
     refute @board.solved?
   end
 
+  def test_displays_correctly
+    assert_equal (<<-HEREDOC), @board.to_s
+-----------
+1 | 2 | 3 | 
+4 | 5 | 6 | 
+7 | 8 | 9 | 
+-----------
+
+HEREDOC
+  end
+
 end

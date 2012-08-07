@@ -1,8 +1,8 @@
 module TicTacToe
   # Strategy used when playing on a 3x3 board
-  class ThreebythreeStrategy
+  class ThreeByThreeStrategy
     def initialize(board, letter)
-      @heuristic = ThreebyThree::Heuristic.new(board, letter)
+      @heuristic = ThreeByThree::Heuristic.new(board, letter)
     end
 
     # The strategy is from the Wikipedia article on Tic-Tac-Toe
@@ -21,11 +21,11 @@ module TicTacToe
         return move if move
         end
 
-      raise Exception.new("No possible moves to play!")
+      raise "No possible moves to play!"
     end
   end
 
-  module ThreebyThree
+  module ThreeByThree
     # Brute Force Implementation for the Three by Three Strategy
     # This implementation uses loops to try a change all of the board values and
     # checking the result
