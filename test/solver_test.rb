@@ -122,6 +122,12 @@ module SharedSolverTests
     assert_nil @board.get_cell(1, 2)
   end
 
+  def test_does_not_create_fork_in_the_far_future
+    set_grid([['o', nil, nil], [nil, nil, nil], [nil, nil, nil]])
+    solve!
+    assert_nil @board.get_cell(0, 2)
+  end
+
 
   def test_empty_corner
     set_grid([[nil,nil,nil],[nil,'o',nil],[nil,nil,nil]])

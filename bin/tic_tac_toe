@@ -6,7 +6,7 @@ begin
 rescue LoadError
   case $!.to_s
   when /tic_tac_toe/
-  if !$:.include?(libdir)
+    if !$:.include?(libdir)
       warn "warn: #$!. trying again with #{libdir} on load path"
       $:.unshift(libdir)
       retry
@@ -18,31 +18,40 @@ end
 def setup
   game = TicTacToe::Game.new
   terminal = TicTacToe::TerminalGame.new(game.board)
-  first = (terminal.computer_goes_first? ? 'o' : 'x')
 
-  [game, terminal, first]
+  if terminal.computer_goes_first?
+    @player_1 = TicTacToe::ComputerPlayer.new(letter: 'o')
+    @player_2 = TicTacToe::HumanPlayer.new(letter: 'x')
+  else
+    @player_1 = TicTacToe::HumanPlayer.new(letter: 'o')
+    @player_2 = TicTacToe::HumanPlayer.new(letter: 'x')
+  end
+
+  game = TicTacToe::Game.new(nil, @player_1, @player_2)
+
+  [game, terminal]
 end
 
-game, terminal, first = setup
+game, terminal = setup
 
 loop do
-
-  terminal.update_board
-
-  params = {
-    :board => game.grid,
-    :first => first,
-    "#{first}".to_sym => terminal.get_move_from_user
-  }
-
-  game = TicTacToe::Game.new(params).play
-
+  game.start
+  terminal = TicTacToe::TerminalGame.new(game.board)
 
   if game.solved? || game.cats?
     terminal.update_board
     break unless terminal.play_again?
-    game, terminal, first = setup
+    game, terminal = setup
   end
+
+  terminal.update_board
+
+  move = terminal.get_move_from_user
+  @player_1 = TicTacToe::HumanPlayer.new(letter: @player_1.letter, move: move)
+  @player_2 = TicTacToe::ComputerPlayer.new(letter: @player_2.letter)
+
+  grid = game.grid
+  game = TicTacToe::Game.new(grid, @player_1, @player_2)
 
 end
 

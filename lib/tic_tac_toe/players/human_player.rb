@@ -2,9 +2,11 @@ module TicTacToe
 
   class HumanPlayer 
     attr_reader :letter
+    attr_writer :move
 
     def initialize(params)
-      @letter, @move = params['letter'], params['move']
+      @letter, @move = (params['letter'] || params[:letter]), 
+                       (params['move'] || params[:move])
     end
 
     def get_move(_board)

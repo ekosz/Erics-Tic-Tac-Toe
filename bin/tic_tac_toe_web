@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+libdir = File.expand_path('../../lib', __FILE__).sub(/^#{Dir.pwd}\//, '')
+webdir = File.expand_path('../../web_interface', __FILE__).sub(/^#{Dir.pwd}\//, '')
+
+$:.unshift(libdir)
+$:.unshift(webdir)
+
+require 'tic_tac_toe'
+require 'main'
+
+Rack::Handler::WEBrick.run( Sinatra::Application, :Port => 3000)

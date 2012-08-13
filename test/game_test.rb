@@ -53,18 +53,21 @@ class GameTest < MiniTest::Unit::TestCase
 
   def test_setting_a_players_move
     game = TicTacToe::Game.new(empty_grid, PlayerMock.new('1'), PlayerMock.new(nil))
+    game.start
 
     assert_equal 'x', game.board.get_cell(0, 0)
   end
 
   def test_set_move_via_computer
     game = TicTacToe::Game.new(empty_grid, PlayerMock.new([0,0]), PlayerMock.new([2,2]))
+    game.start
 
     assert_equal 7, game.board.empty_positions.size
   end
 
   def test_skip_a_players_turn
     game = TicTacToe::Game.new(empty_grid, PlayerMock.new([0,0]), PlayerMock.new(nil))
+    game.start
 
     assert game.board.only_one?
   end

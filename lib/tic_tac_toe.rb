@@ -7,5 +7,7 @@ module TicTacToe
 end
 
 # Internal Project Requires
-require 'tic-tac-toe/board'
-require 'tic-tac-toe/game'
+require 'tic_tac_toe/board'
+require 'tic_tac_toe/game'
+require 'tic_tac_toe/player'
+require 'tic_tac_toe/presentors/game_presentor'

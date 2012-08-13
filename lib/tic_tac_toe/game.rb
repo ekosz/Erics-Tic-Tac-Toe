@@ -11,8 +11,6 @@ module TicTacToe
   # The main director of the program
   # Directs its gametype when to retrieve information from the user
   class Game
-    Solvers = [MinimaxStrategy, ThreeByThreeStrategy]
-
     attr_reader :board
 
     attr_reader :player_moves
@@ -22,7 +20,18 @@ module TicTacToe
       @board.grid = board || [[nil,nil,nil],[nil,nil,nil],[nil,nil,nil]]
       @player_1 = player_1
       @player_2 = player_2
-      play
+      @current_player = @player_1 && @player_1.has_next_move? ? @player_1 : @player_2
+    end
+
+    def start
+      while @current_player && (move = @current_player.get_move(@board))
+        move = number_to_cords(move) unless move.is_a?(Array)
+
+        @board.play_at(*move, @current_player.letter)
+        break if over?
+
+        switch_player
+      end
     end
 
     def grid
@@ -43,21 +52,6 @@ module TicTacToe
 
     private
 
-    def play
-      player = @player_1 && @player_1.has_next_move? ? @player_1 : @player_2
-
-      while player && (move = player.get_move(@board)) do
-        move = number_to_cords(move) unless move.is_a?(Array)
-
-        @board.play_at(*move, player.letter)
-        break if over?
-
-        player = next_player(player)
-      end
-
-      self
-    end
-
     def over?
       solved? || cats?
     end
@@ -68,11 +62,8 @@ module TicTacToe
       [num % @board.size, num/@board.size]
     end
 
-    def next_player(player)
-      case player
-      when @player_1 then @player_2
-      when @player_2 then @player_1
-      end
+    def switch_player
+      @current_player = @current_player == @player_1 ? @player_2 : @player_1
     end
     
   end

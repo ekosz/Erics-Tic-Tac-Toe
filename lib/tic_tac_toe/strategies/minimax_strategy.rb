@@ -26,7 +26,7 @@ module TicTacToe
   # This class has 63 lines. Should be <= 50
   class Minimax
 
-    MAXDEPTH = 5
+    MAXDEPTH = 6
     PositiveInfinity = +1.0/0.0 
     NegativeInfinity = -1.0/0.0 
 
