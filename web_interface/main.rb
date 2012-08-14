@@ -19,6 +19,8 @@ post '/play' do
   redirect to(over_url(@game.winner)) if @game.solved?
   redirect to(over_url("nobody")) if @game.cats?
 
+  @player_2 = TicTacToe::ComputerPlayer.new(letter: @player_2.letter)
+
   erb :play
 end
 
