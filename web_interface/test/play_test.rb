@@ -38,6 +38,6 @@ class PlayTest < MiniTest::Unit::TestCase
     node = Nokogiri::HTML(ERB.new(@@content).result(binding))
     player_1_json = node.css("form")[0].css("input[name='player_1']").attr('value').value
 
-    assert_equal 'x', JSON.parse(play_1_json)['letter']
+    assert_equal 'x', JSON.parse(player_1_json)['letter']
   end
 end
