@@ -1,13 +1,10 @@
-<% letter_1 = JSON.parse(params[:player_1])['letter'] %>
-<% letter_2 = JSON.parse(params[:player_2])['letter'] %>
-
 <div class="board">
   <% TicTacToe::GamePresentor.new(@game).grid.each do |row| %>
     <div class="row">
       <% row.each do |cell| %>
         <form method="post">
-          <input type="hidden" name="player_1" value='<%= player_json(letter_1, TicTacToe::Player::HUMAN, cell) %>' />
-          <input type="hidden" name="player_2" value='<%= player_json(letter_2, TicTacToe::Player::COMPUTER) %>' />
+          <input type="hidden" name="player_1" value='<%= TicTacToe::PlayerPresenter.new(@player_1).move_json(cell) %>' />
+          <input type="hidden" name="player_2" value='<%= TicTacToe::PlayerPresenter.new(@player_2).move_json %>' />
           <input type="hidden" name="board" value='<%= @game.grid.to_json %>' />
           <a class="cell" href="#" onclick="this.parentElement.submit(); return false;">
             <%= cell %>

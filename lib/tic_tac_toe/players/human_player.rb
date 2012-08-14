@@ -19,6 +19,10 @@ module TicTacToe
       !!@move
     end
 
+    def type
+      Player::HUMAN
+    end
+
   end
 
 end

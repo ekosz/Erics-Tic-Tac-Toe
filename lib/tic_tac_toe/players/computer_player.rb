@@ -15,6 +15,10 @@ module TicTacToe
     def has_next_move?
       true
     end
+    
+    def type
+      Player::COMPUTER
+    end
 
   end
 

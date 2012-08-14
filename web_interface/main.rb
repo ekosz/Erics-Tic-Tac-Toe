@@ -3,12 +3,6 @@ require 'json'
 
 require 'tic_tac_toe'
 
-helpers do
-  def player_json(letter, type, move=nil)
-    {letter: letter, type: type, move: move}.to_json
-  end
-end
-
 get '/' do
   @game = TicTacToe::Game.new
 
@@ -18,6 +12,7 @@ end
 post '/play' do
   board = JSON.parse(params[:board]) if params[:board]
 
+  @player_1, @player_2 = players
   @game = TicTacToe::Game.new(board, *players)
   @game.start
 

@@ -27,6 +27,11 @@ module SharedPlayerTests
   def test_has_next_move
     assert @player.has_next_move?
   end
+
+  def test_has_type
+    refute @player.type.nil?
+  end
+
 end
 
 class HumanPlayerTest < MiniTest::Unit::TestCase

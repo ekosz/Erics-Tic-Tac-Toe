@@ -10,4 +10,5 @@ end
 require 'tic_tac_toe/board'
 require 'tic_tac_toe/game'
 require 'tic_tac_toe/player'
-require 'tic_tac_toe/presentors/game_presentor'
+require 'tic_tac_toe/presentors/game_presenter'
+require 'tic_tac_toe/presentors/player_presenter'
