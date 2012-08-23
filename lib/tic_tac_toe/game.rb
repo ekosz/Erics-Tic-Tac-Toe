@@ -25,7 +25,7 @@ module TicTacToe
 
     def start
       while @current_player && (move = @current_player.get_move(@board))
-        move = number_to_cords(move) unless move.is_a?(Array)
+        move = TicTacToe::number_to_cords(move, @board.size) unless move.is_a?(Array)
 
         @board.play_at(*move, @current_player.letter)
         break if over?
@@ -54,12 +54,6 @@ module TicTacToe
 
     def over?
       solved? || cats?
-    end
-
-    def number_to_cords(num)
-      num = num.to_i
-      num -= 1
-      [num % @board.size, num/@board.size]
     end
 
     def switch_player

@@ -1,12 +1,12 @@
 module TicTacToe
-  class Player
+  module Player
     HUMAN = 'human'
     COMPUTER = 'computer'
 
     def self.build(params)
-      return HumanPlayer.new(params) if params['type'] == HUMAN
+      return Player::Human.new(params) if params['type'] == HUMAN
 
-      ComputerPlayer.new(params)
+      Player::Computer.new(params)
     end
 
   end

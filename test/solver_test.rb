@@ -165,7 +165,7 @@ end
 class MinimaxSolverTest < MiniTest::Unit::TestCase
   def setup
     @board = TicTacToe::Board.new
-    @solver = TicTacToe::MinimaxStrategy.new(@board, 'x')
+    @solver = TicTacToe::Strategy::MinimaxStrategy.new(@board, 'x')
   end
   
   include SharedSolverTests
@@ -174,7 +174,7 @@ end
 class ThreeByThreeSolverTest < MiniTest::Unit::TestCase
   def setup
     @board = TicTacToe::Board.new
-    @solver = TicTacToe::ThreeByThreeStrategy.new(@board, 'x')
+    @solver = TicTacToe::Strategy::ThreeByThreeStrategy.new(@board, 'x')
   end
   
   include SharedSolverTests

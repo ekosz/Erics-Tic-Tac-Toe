@@ -19,34 +19,34 @@ class TerminalGameTest < MiniTest::Unit::TestCase
   end
 
   def test_computer_goes_first
-    assert TicTacToe::TerminalGame.new(nil, IoMock.new("s")).computer_goes_first?
-    refute TicTacToe::TerminalGame.new(nil, IoMock.new("f")).computer_goes_first?
+    assert TicTacToe::GameType::Terminal.new(nil, IoMock.new("s")).computer_goes_first?
+    refute TicTacToe::GameType::Terminal.new(nil, IoMock.new("f")).computer_goes_first?
   end
 
   def test_get_move_from_user
-    game = TicTacToe::TerminalGame.new(TicTacToe::Board.new, IoMock.new("1"))
+    game = TicTacToe::GameType::Terminal.new(TicTacToe::Board.new, IoMock.new("1"))
     assert_equal [0, 0], game.get_move_from_user
 
-    game = TicTacToe::TerminalGame.new(TicTacToe::Board.new, IoMock.new("9"))
+    game = TicTacToe::GameType::Terminal.new(TicTacToe::Board.new, IoMock.new("9"))
     assert_equal [2, 2], game.get_move_from_user
   end
 
   def test_handle_bad_input
-    game = TicTacToe::TerminalGame.new(TicTacToe::Board.new, IoMock.new(["1", "a"]))
+    game = TicTacToe::GameType::Terminal.new(TicTacToe::Board.new, IoMock.new(["1", "a"]))
     assert_equal [0, 0], game.get_move_from_user
   end
 
   def test_play_again
-    game = TicTacToe::TerminalGame.new(nil, IoMock.new("y"))
+    game = TicTacToe::GameType::Terminal.new(nil, IoMock.new("y"))
     assert game.play_again?
 
-    game = TicTacToe::TerminalGame.new(nil, IoMock.new("n"))
+    game = TicTacToe::GameType::Terminal.new(nil, IoMock.new("n"))
     refute game.play_again?
   end
 
   def test_update_board
     mock = IoMock.new
-    game = TicTacToe::TerminalGame.new("FooBar", mock)
+    game = TicTacToe::GameType::Terminal.new("FooBar", mock)
     game.update_board
 
     assert_equal "FooBar", mock.output
@@ -54,25 +54,10 @@ class TerminalGameTest < MiniTest::Unit::TestCase
 
   def test_display_text
     mock = IoMock.new
-    game = TicTacToe::TerminalGame.new(nil, mock)
+    game = TicTacToe::GameType::Terminal.new(nil, mock)
     game.display_text("FooBar")
 
     assert_equal "FooBar", mock.output
   end
 
-  def test_select_solver
-    mock = IoMock.new("1")
-    game = TicTacToe::TerminalGame.new(nil, mock)
-    assert_equal "FooBar", game.select(["FooBar", "BarFoo"])
-
-    mock = IoMock.new("2")
-    game = TicTacToe::TerminalGame.new(nil, mock)
-    assert_equal "BarFoo", game.select(["FooBar", "BarFoo"])
-  end
-
-  def test_select_bad_choice
-    mock = IoMock.new(["1", 'x'])
-    game = TicTacToe::TerminalGame.new(nil, mock)
-    assert_equal "FooBar", game.select(["FooBar", "BarFoo"])
-  end
 end

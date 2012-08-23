@@ -20,8 +20,8 @@ def setup
   terminal = TicTacToe::TerminalGame.new(game.board)
 
   if terminal.computer_goes_first?
-    @player_1 = TicTacToe::ComputerPlayer.new(letter: 'o')
-    @player_2 = TicTacToe::HumanPlayer.new(letter: 'x')
+    @player_1 = TicTacToe::HumanPlayer.new(letter: 'x')
+    @player_2 = TicTacToe::ComputerPlayer.new(letter: 'o')
   else
     @player_1 = TicTacToe::HumanPlayer.new(letter: 'o')
     @player_2 = TicTacToe::HumanPlayer.new(letter: 'x')
@@ -35,6 +35,7 @@ end
 game, terminal = setup
 
 loop do
+
   game.start
   terminal = TicTacToe::TerminalGame.new(game.board)
 
@@ -42,6 +43,7 @@ loop do
     terminal.update_board
     break unless terminal.play_again?
     game, terminal = setup
+    next
   end
 
   terminal.update_board
