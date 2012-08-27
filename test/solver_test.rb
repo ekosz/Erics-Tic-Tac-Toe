@@ -158,7 +158,8 @@ module SharedSolverTests
   end
 
   def solve!
-    @board.play_at(*@solver.solve, 'x')
+    x, y = @solver.solve
+    @board.play_at(x, y, 'x')
   end
 end
 

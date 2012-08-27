@@ -45,6 +45,7 @@ end
 
 class ComputerPlayerTest < MiniTest::Unit::TestCase
   class SolverMock
+    def initialize(_x, _y); end
     def solve
       [0, 0]
     end

@@ -10,7 +10,7 @@ module TicTacToe
       end
 
       def move_json(move=nil)
-        {letter: @player.letter, type: @player.type, move: move}.to_json
+        {:letter => @player.letter, :type => @player.type, :move => move}.to_json
       end
     end
 

@@ -1,11 +1,14 @@
 #This is a computer that will play a perfect game of tic-tac-toe
 #Author: Eric Koslow
 
-require_relative 'game_types/terminal_game'
-require_relative 'strategies/three_by_three_strategy'
-require_relative 'strategies/minimax_strategy'
-require_relative 'players/human_player'
-require_relative 'players/computer_player'
+$: << File.expand_path(File.dirname(__FILE__) + "/game_types")
+$: << File.expand_path(File.dirname(__FILE__) + "/strategies")
+$: << File.expand_path(File.dirname(__FILE__) + "/players")
+require 'terminal_game'
+require 'three_by_three_strategy'
+require 'minimax_strategy'
+require 'human_player'
+require 'computer_player'
 
 module TicTacToe
   # The main director of the program
@@ -27,7 +30,7 @@ module TicTacToe
       while @current_player && (move = @current_player.get_move(@board))
         move = TicTacToe::number_to_cords(move, @board.size) unless move.is_a?(Array)
 
-        @board.play_at(*move, @current_player.letter)
+        @board.play_at(move[0], move[1], @current_player.letter)
         break if over?
 
         switch_player

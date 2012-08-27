@@ -1,4 +1,5 @@
 # Third Party Requies
+require 'rubygems'
 
 # Module wide methods / constants
 module TicTacToe

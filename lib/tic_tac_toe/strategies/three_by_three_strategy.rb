@@ -188,7 +188,8 @@ module TicTacToe
               # Simulate forcing them to block
               temp_board = @board.clone
               temp_board.play_at(row, column, @letter)
-              temp_board.play_at(*block(temp_board, @other_player), @other_player)
+              x, y = block(temp_board, @other_player)
+              temp_board.play_at(x, y, @other_player)
 
               # Did I just create another fork with that block?
               next if PotentialState.new(temp_board, @other_player).fork_exists?
