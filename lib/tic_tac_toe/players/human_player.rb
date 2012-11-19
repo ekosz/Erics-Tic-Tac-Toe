@@ -1,7 +1,10 @@
-module TicTacToe
+require 'tic_tac_toe/player'
 
+module TicTacToe
   module Player
     class Human
+      include Player::MoveJson
+
       attr_reader :letter
       attr_writer :move
 

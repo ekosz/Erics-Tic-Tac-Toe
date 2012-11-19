@@ -41,6 +41,14 @@ module TicTacToe
       @board.grid
     end
 
+    def decorated_grid
+      grid.each_with_index.map do |row, i|
+        row.each_with_index.map do |cell, j|
+          cell || ((i*3)+(j+1)).to_s
+        end
+      end
+    end
+
     def solved?
       @board.solved?
     end

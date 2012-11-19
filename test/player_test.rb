@@ -32,6 +32,11 @@ module SharedPlayerTests
     refute @player.type.nil?
   end
 
+  def test_has_move_json
+    assert_equal({:letter => 'x', :type => @player.type, :move => '1'}.to_json,
+                 @player.move_json('1'))
+  end
+
 end
 
 class HumanPlayerTest < MiniTest::Unit::TestCase

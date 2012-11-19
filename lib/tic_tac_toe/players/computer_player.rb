@@ -1,8 +1,10 @@
+require 'tic_tac_toe/player'
+
 module TicTacToe
-
   module Player
-
     class Computer
+      include MoveJson
+
       attr_reader :letter
 
       def initialize(params, solver=Strategy::MinimaxStrategy)
@@ -23,8 +25,5 @@ module TicTacToe
       end
 
     end
-
   end
-
-
 end

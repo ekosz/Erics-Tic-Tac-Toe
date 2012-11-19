@@ -29,6 +29,16 @@ class GameTest < MiniTest::Unit::TestCase
     assert_equal game.grid, empty_grid
   end
 
+  def test_empty_decorated_grid
+    assert_equal [%w(1 2 3), %w(4 5 6), %w(7 8 9)], TicTacToe::Game.new.decorated_grid
+  end
+
+  def test_decorated_grid_with_moves
+    game = TicTacToe::Game.new([['x', nil, nil], [nil, nil, nil], [nil, nil, nil]])
+
+    assert_equal [%w(x 2 3), %w(4 5 6), %w(7 8 9)], game.decorated_grid
+  end
+
   def test_an_empty_game_is_not_solved
     game = TicTacToe::Game.new
 
